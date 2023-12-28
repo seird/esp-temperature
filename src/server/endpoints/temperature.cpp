@@ -1,29 +1,29 @@
 #include <stdio.h>
 #include <ArduinoJson.h>
 
-#include "restserver.h"
+#include "server.h"
 #include "sensors/temperature.h"
 
 
 extern ESP8266WebServer server;
 
 
-/**
- * @brief Perform a temperature measurement
- * 
- * GET
- *  
- */
 void
-get_temperature()
+get_temperature_json()
 {
-    float temperature = sensors_temperature_get();
-
     StaticJsonDocument<200> jsonDocument;
-    jsonDocument["value"] = temperature;
-    jsonDocument["updated"] = 0;
+    jsonDocument["value"] = sensors_temperature_get();
 
     char JSONmessageBuffer[50];
     serializeJsonPretty(jsonDocument, JSONmessageBuffer, sizeof(JSONmessageBuffer));
-    server.send(202, "application/json", JSONmessageBuffer);
+    server.send(200, "application/json", JSONmessageBuffer);
+}
+
+
+void
+get_temperature()
+{
+    char text[20];
+    snprintf(text, sizeof(text), "%.2f", sensors_temperature_get());
+    server.send(200, "text/plain", text);
 }

@@ -6,7 +6,7 @@
 #define WIFI_RETRY_DELAY 500
 
 #define URL_SUBMIT "http://192.168.1.27:8868/api/sensor/submit"
-#define SENSOR_ID 1
+#define SENSOR_ID 3
 
 #define PIN_SENSOR_DATA D2
 #define SUBMIT_EVERY_MS 60000

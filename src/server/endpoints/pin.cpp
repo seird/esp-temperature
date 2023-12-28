@@ -4,7 +4,7 @@
 
 #include "config.h"
 #include "pin.h"
-#include "restserver.h"
+#include "server.h"
 
 
 extern ESP8266WebServer server;

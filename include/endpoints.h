@@ -15,7 +15,9 @@ void post_pin_mode(uint8_t id);
 void get_root();
 
 void get_uptime();
+void get_uptime_json();
 
 void get_temperature();
+void get_temperature_json();
 
 #endif // __ENDPOINTS_H__

@@ -7,12 +7,16 @@
 #include "auth.h"
 #include "config.h"
 #include "pin.h"
-#include "restserver.h"
+#include "server.h"
 #include "sensors/temperature.h"
 
 
 extern ESP8266WebServer server;
+
+
+#if defined(URL_SUBMIT) && defined(SENSOR_ID) && defined(SUBMIT_EVERY_MS)
 static unsigned long last_submit = 0;
+#endif
 
 
 int
@@ -21,6 +25,9 @@ init_wifi()
     digitalWrite(D4, LOW);
 
     WiFi.mode(WIFI_STA);
+#ifdef HOSTNAME
+    WiFi.setHostname(HOSTNAME);
+#endif
     WiFi.begin(WIFI_SSID, WIFI_PASSWD);
 
     while (WiFi.status() != WL_CONNECTED) {
@@ -39,7 +46,7 @@ setup(void)
     Serial.begin(9600);
 
     pins_init();
-    sensors_temperature_init();
+    sensors_temperature_init(PIN_SENSOR_DATA);
     init_wifi();
 
     server_config_routing();
@@ -47,6 +54,7 @@ setup(void)
 }
 
 
+#if defined(URL_SUBMIT) && defined(SENSOR_ID) && defined(SUBMIT_EVERY_MS)
 void
 send_temperature()
 {
@@ -67,6 +75,7 @@ send_temperature()
     http.POST(JSONmessageBuffer);
     http.end();
 }
+#endif
 
 
 void
@@ -76,11 +85,13 @@ loop(void)
         init_wifi();
     }
 
+#if defined(URL_SUBMIT) && defined(SENSOR_ID) && defined(SUBMIT_EVERY_MS)
     // due to lack of transparent bridge mode, submit to the server periodically
     if (millis() > (last_submit + SUBMIT_EVERY_MS)) {
         send_temperature();
         last_submit = millis();
     }
+#endif
 
     server.handleClient();
 }

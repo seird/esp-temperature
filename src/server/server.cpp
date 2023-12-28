@@ -3,7 +3,7 @@
 
 #include "auth.h"
 #include "config.h"
-#include "restserver.h"
+#include "server.h"
 #include "endpoints.h"
 
 
@@ -28,6 +28,12 @@ server_config_routing() {
     server.on("/", HTTP_GET, get_root);
 
     server.on("/uptime", HTTP_GET, get_uptime);
+    server.on("/uptime/json", HTTP_GET, get_uptime_json);
+
+    server.on("/temperature", HTTP_GET, get_temperature);
+    server.on("/temperature/json", HTTP_GET, get_temperature_json);
+
+    server.onNotFound([]{server.send(404, "text/plain", "Not found");});
 
     server.on("/pin/D0",  HTTP_GET, [](){get_pin(D0);});
     server.on("/pin/D1",  HTTP_GET, [](){get_pin(D1);});
@@ -88,6 +94,4 @@ server_config_routing() {
     server.on("/pin/D8/mode",  HTTP_POST, [](){post_pin_mode(D8);});
     server.on("/pin/D9/mode",  HTTP_POST, [](){post_pin_mode(D9);});
     server.on("/pin/D10/mode", HTTP_POST, [](){post_pin_mode(D10);});
-
-    server.on("/sensor/temperature", HTTP_GET, get_temperature);
 }

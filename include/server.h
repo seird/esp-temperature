@@ -1,5 +1,5 @@
-#ifndef __RESTSERVER_H__
-#define __RESTSERVER_H__
+#ifndef __SERVER_H__
+#define __SERVER_H__
 
 
 #include <ESP8266WebServer.h>
