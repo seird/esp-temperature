@@ -29,6 +29,6 @@ get_uptime()
     unsigned long seconds = secondsSinceBoot % 60;
 
     char text[60];
-    snprintf(text, sizeof(text), "%3lu d %2lu h %2lu m %2lu s", days, hours, minutes, seconds);
+    snprintf(text, sizeof(text), "%lud %2luh %2lum %2lus", days, hours, minutes, seconds);
     server.send(200, "text/plain", text);
 }

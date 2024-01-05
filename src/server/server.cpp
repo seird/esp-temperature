@@ -35,63 +35,20 @@ server_config_routing() {
 
     server.onNotFound([]{server.send(404, "text/plain", "Not found");});
 
-    server.on("/pin/D0",  HTTP_GET, [](){get_pin(D0);});
-    server.on("/pin/D1",  HTTP_GET, [](){get_pin(D1);});
-    server.on("/pin/D2",  HTTP_GET, [](){get_pin(D2);});
-    server.on("/pin/D3",  HTTP_GET, [](){get_pin(D3);});
-    server.on("/pin/D4",  HTTP_GET, [](){get_pin(D4);});
-    server.on("/pin/D5",  HTTP_GET, [](){get_pin(D5);});
-    server.on("/pin/D6",  HTTP_GET, [](){get_pin(D6);});
-    server.on("/pin/D7",  HTTP_GET, [](){get_pin(D7);});
-    server.on("/pin/D8",  HTTP_GET, [](){get_pin(D8);});
-    server.on("/pin/D9",  HTTP_GET, [](){get_pin(D9);});
-    server.on("/pin/D10", HTTP_GET, [](){get_pin(D10);});
+    char buf[16];
+    const uint8_t pinMap[] = {D0, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10};
+    for (int i=0; i<sizeof(pinMap); ++i) {
+        uint8_t pin = pinMap[i];
 
-    server.on("/pin/D0",  HTTP_POST, [](){post_pin(D0);});
-    server.on("/pin/D1",  HTTP_POST, [](){post_pin(D1);});
-    server.on("/pin/D2",  HTTP_POST, [](){post_pin(D2);});
-    server.on("/pin/D3",  HTTP_POST, [](){post_pin(D3);});
-    server.on("/pin/D4",  HTTP_POST, [](){post_pin(D4);});
-    server.on("/pin/D5",  HTTP_POST, [](){post_pin(D5);});
-    server.on("/pin/D6",  HTTP_POST, [](){post_pin(D6);});
-    server.on("/pin/D7",  HTTP_POST, [](){post_pin(D7);});
-    server.on("/pin/D8",  HTTP_POST, [](){post_pin(D8);});
-    server.on("/pin/D9",  HTTP_POST, [](){post_pin(D9);});
-    server.on("/pin/D10", HTTP_POST, [](){post_pin(D10);});
+        snprintf(buf, sizeof(buf), "/pin/D%d", i);
+        server.on(buf, HTTP_GET,  [pin](){get_pin(pin);});
+        server.on(buf, HTTP_POST, [pin](){post_pin(pin);});
 
-    server.on("/pin/D0/toggle",  HTTP_POST, [](){post_pin_toggle(D0);});
-    server.on("/pin/D1/toggle",  HTTP_POST, [](){post_pin_toggle(D1);});
-    server.on("/pin/D2/toggle",  HTTP_POST, [](){post_pin_toggle(D2);});
-    server.on("/pin/D3/toggle",  HTTP_POST, [](){post_pin_toggle(D3);});
-    server.on("/pin/D4/toggle",  HTTP_POST, [](){post_pin_toggle(D4);});
-    server.on("/pin/D5/toggle",  HTTP_POST, [](){post_pin_toggle(D5);});
-    server.on("/pin/D6/toggle",  HTTP_POST, [](){post_pin_toggle(D6);});
-    server.on("/pin/D7/toggle",  HTTP_POST, [](){post_pin_toggle(D7);});
-    server.on("/pin/D8/toggle",  HTTP_POST, [](){post_pin_toggle(D8);});
-    server.on("/pin/D9/toggle",  HTTP_POST, [](){post_pin_toggle(D9);});
-    server.on("/pin/D10/toggle", HTTP_POST, [](){post_pin_toggle(D10);});
+        snprintf(buf, sizeof(buf), "/pin/D%d/toggle", i);
+        server.on(buf, HTTP_POST, [pin](){post_pin_toggle(pin);});
 
-    server.on("/pin/D0/mode",  HTTP_GET, [](){get_pin_mode(D0);});
-    server.on("/pin/D1/mode",  HTTP_GET, [](){get_pin_mode(D1);});
-    server.on("/pin/D2/mode",  HTTP_GET, [](){get_pin_mode(D2);});
-    server.on("/pin/D3/mode",  HTTP_GET, [](){get_pin_mode(D3);});
-    server.on("/pin/D4/mode",  HTTP_GET, [](){get_pin_mode(D4);});
-    server.on("/pin/D5/mode",  HTTP_GET, [](){get_pin_mode(D5);});
-    server.on("/pin/D6/mode",  HTTP_GET, [](){get_pin_mode(D6);});
-    server.on("/pin/D7/mode",  HTTP_GET, [](){get_pin_mode(D7);});
-    server.on("/pin/D8/mode",  HTTP_GET, [](){get_pin_mode(D8);});
-    server.on("/pin/D9/mode",  HTTP_GET, [](){get_pin_mode(D9);});
-    server.on("/pin/D10/mode", HTTP_GET, [](){get_pin_mode(D10);});
-
-    server.on("/pin/D0/mode",  HTTP_POST, [](){post_pin_mode(D0);});
-    server.on("/pin/D1/mode",  HTTP_POST, [](){post_pin_mode(D1);});
-    server.on("/pin/D2/mode",  HTTP_POST, [](){post_pin_mode(D2);});
-    server.on("/pin/D3/mode",  HTTP_POST, [](){post_pin_mode(D3);});
-    server.on("/pin/D4/mode",  HTTP_POST, [](){post_pin_mode(D4);});
-    server.on("/pin/D5/mode",  HTTP_POST, [](){post_pin_mode(D5);});
-    server.on("/pin/D6/mode",  HTTP_POST, [](){post_pin_mode(D6);});
-    server.on("/pin/D7/mode",  HTTP_POST, [](){post_pin_mode(D7);});
-    server.on("/pin/D8/mode",  HTTP_POST, [](){post_pin_mode(D8);});
-    server.on("/pin/D9/mode",  HTTP_POST, [](){post_pin_mode(D9);});
-    server.on("/pin/D10/mode", HTTP_POST, [](){post_pin_mode(D10);});
+        snprintf(buf, sizeof(buf), "/pin/D%d/mode", i);
+        server.on(buf, HTTP_GET,  [pin](){get_pin_mode(pin);});
+        server.on(buf, HTTP_POST, [pin](){post_pin_mode(pin);});
+    }
 }
